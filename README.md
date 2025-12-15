@@ -1,23 +1,74 @@
-# Shopping Cart Analysis
+# 📦 Case Study: Phân tích giỏ hàng với Apriori
 
-Phân tích dữ liệu bán lẻ để tìm ra mối quan hệ giữa các sản phẩm thường được mua cùng nhau bằng các kỹ thuật **Association Rule Mining** (Apriori). Project triển khai pipeline đầy đủ từ xử lý dữ liệu → phân tích → khai thác luật → sinh báo cáo.
+## 👥 Thông tin Nhóm
+- **Nhóm:** Nhóm 4
+- **Thành viên:**
+  - Thành viên 1
+  - Thành viên 2
+- **Chủ đề:** Phân tích giỏ hàng và luật kết hợp sản phẩm
+- **Dataset:** Online Retail (UCI)
 
----
+## Mục tiêu
+Mục tiêu của nhóm là phân tích dữ liệu bán lẻ để khám phá các sản phẩm thường được mua cùng nhau, từ đó đề xuất chiến lược cross-selling và tối ưu hóa bố trí hàng hóa trong cửa hàng.
 
-## Features
+## 1. Ý tưởng & Feynman Style
+Hãy tưởng tượng bạn là chủ siêu thị và muốn biết khách hàng thường mua gì cùng nhau. Ví dụ, nếu ai mua sữa thì hay mua bánh mì, bạn có thể đặt chúng gần nhau để tăng doanh số. Apriori là công cụ giúp tìm ra những "quy tắc mua chung" này từ hàng ngàn hóa đơn.
 
-- Làm sạch dữ liệu & xử lý giá trị lỗi
-- Xây dựng basket matrix (transaction × product)
-- Khai phá tập mục phổ biến (Frequent itemsets)
-- Sinh luật kết hợp (Association Rules)
-- Các chỉ số:
-  - Support
-  - Confidence
-  - Lift
-- Visualization với:
-  - bar chart
-  - scatter plot
-  - network graph
+Apriori phù hợp cho bài toán giỏ hàng vì nó xử lý dữ liệu giao dịch lớn, tìm ra các nhóm sản phẩm liên kết thực sự (không phải ngẫu nhiên). Ý tưởng thuật toán: Bắt đầu từ sản phẩm đơn, dần mở rộng thành nhóm lớn hơn, loại bỏ những nhóm không đủ phổ biến.
+
+## 2. Quy trình Thực hiện
+
+1) Load & làm sạch dữ liệu
+2) Tạo ma trận basket
+3) Áp dụng Apriori
+4) Trích xuất luật
+5) Trực quan hóa
+6) Phân tích insight
+
+## 3. Tiền xử lý Dữ liệu
+- Những bước làm sạch:
+  - Loại bỏ sản phẩm "rỗng"
+  - Loại bỏ transaction bị cancel (InvoiceNo bắt đầu "C")
+  - Loại bỏ số lượng âm
+
+- Thống kê nhanh:
+  - Số giao dịch sau lọc: ~400,000
+  - Số sản phẩm duy nhất: ~4,000
+
+## 4. Áp dụng Apriori
+**Tham số sử dụng:**
+- `min_support = 0.01`
+- `min_threshold = 1.0`
+- `max_len = 3`
+
+```python
+from mlxtend.frequent_patterns import apriori, association_rules
+
+frequent_itemsets = apriori(basket_df, min_support=0.01, use_colnames=True)
+rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1.0)
+rules.sort_values("lift", ascending=False, inplace=True)
+rules.head()
+```
+
+## 5. Trực quan hóa (Visualization)
+- Hình 1: Biểu đồ scatter plot của support vs confidence, cho thấy các luật mạnh.
+- Hình 2: Mạng lưới các luật với lift cao, minh họa mối liên kết giữa sản phẩm.
+
+## 6. Insight từ Kết quả
+**Insight #1:** Các sản phẩm thảo mộc (herb markers) có liên kết rất mạnh, với lift lên đến 74, cho thấy khách hàng mua combo gia vị thường xuyên.
+
+**Insight #2:** Túi xách Charlotte (nhiều màu) là nhóm sản phẩm trung tâm, xuất hiện nhiều trong luật, phù hợp cho chiến lược phối màu.
+
+**Insight #3:** Bộ ấm trà Regency (xanh, hồng, hoa) có confidence cao, gợi ý khách mua một màu thường mua thêm màu khác.
+
+**Insight #4:** Đồng hồ báo thức Bakelike (xanh, đỏ, hồng) liên kết chặt, phù hợp cho khách mua quà tặng.
+
+**Insight #5:** Túi Jumbo (táo, lê) và túi Woodland Animals có support vừa phải nhưng lift mạnh, cho thấy sở thích mua theo chủ đề.
+
+## 7. Kết luận & Đề xuất Kinh doanh
+- Gợi ý cross-sell: Đề xuất sản phẩm liên quan khi khách thêm vào giỏ, như thêm ROSES TEACUP khi mua GREEN TEACUP.
+- Gợi ý sắp xếp hàng trên kệ: Nhóm thảo mộc ở khu gia vị, túi Charlotte ở khu phụ kiện, ấm trà ở khu đồ uống.
+- Gợi ý khuyến mãi theo mùa: Combo Giáng sinh với WOODEN CHRISTMAS items, hoặc mùa hè với túi màu sáng.
   - interactive Plotly
 - Tự động hóa pipeline bằng **Papermill**
 
@@ -155,85 +206,3 @@ Trang Le
 📄 License
 MIT — sử dụng tự do cho nghiên cứu, học thuật và ứng dụng nội bộ.
 TrangLé
--------------------------------------------------------
-Thử nghiệm đổi tham số thành
-FILTER_MIN_SUPPORT=0.02,
-FILTER_MIN_CONF=0.4,
-FILTER_MIN_LIFT=1.2
-
-
-* kết quả và so sánh với tham số gốc
-
-1: Thuật Toán Apriori Là Gì?
-Hãy tưởng tượng bạn là chủ cửa hàng và muốn biết khách hàng thường mua gì cùng nhau. 
-Ví dụ, nếu ai mua sữa thì thường mua bánh mì, bạn có thể đặt chúng gần nhau để tăng doanh số. Apriori là công cụ giúp tìm ra những "quy tắc mua chung" này từ dữ liệu hóa đơn. Nó dựa trên ba ý chính:
-
-Support: Tỷ lệ hóa đơn chứa sản phẩm đó (càng cao càng phổ biến).
-Confidence: Xác suất nếu mua A thì mua B (càng cao càng đáng tin).
-Lift: Mức độ liên kết thực sự (trên 1 nghĩa là liên kết mạnh hơn ngẫu nhiên).
-Chúng ta lọc luật dựa trên ngưỡng để chỉ giữ lại những luật ý nghĩa.
-
-2: Thí Nghiệm Với Hai Bộ Tham Số
-Em chạy thuật toán trên cùng một tập dữ liệu bán lẻ (gần 400.000 giao dịch từ Anh). Dữ liệu bao gồm các sản phẩm như túi xách, ấm nước, và đồ trang trí Giáng sinh. Tôi so sánh hai phiên bản:
-
-Phiên bản 1 (Tham số ban đầu): Support tối thiểu 1%, Confidence 30%, Lift 1.2.
-Phiên bản 2 (Tham số chặt hơn): Support tối thiểu 2%, Confidence 40%, Lift 1.2.
-Tại sao thay đổi? Vì phiên bản 1 có thể tạo ra quá nhiều luật "nhiễu" (ít ý nghĩa), trong khi phiên bản 2 chỉ giữ lại luật thực sự mạnh mẽ.
-
-3: Kết Quả Chính
-Số luật tạo ra: Phiên bản 1 có 3.856 luật ban đầu, lọc còn 1.794 luật. Phiên bản 2 có ít luật hơn nhiều – chỉ 136 luật sau lọc.
-Chất lượng luật:
-Phiên bản 1 tập trung vào sản phẩm thảo mộc (herb markers) với lift cực cao (70-74), confidence gần 100%. Điều này có nghĩa là những sản phẩm này liên kết rất chặt, nhưng có thể chỉ phổ biến trong một nhóm nhỏ khách hàng.
-Phiên bản 2 mở rộng ra nhiều danh mục hơn: túi xách Charlotte (nhiều màu), ấm nước, đồng hồ báo thức, và bộ ấm trà Regency. Lift giảm xuống 10-27, nhưng confidence vẫn cao (40-90%). Luật này đa dạng hơn, phản ánh hành vi mua sắm chung của nhiều khách hàng hơn.
-Sự khác biệt này như thế nào? Phiên bản 1 giống như tìm "người bạn thân nhất" trong một nhóm nhỏ, còn phiên bản 2 như tìm "người bạn chung" trong cả lớp học lớn hơn.
-
-4: Ưu và Nhược
-Phiên bản 1: Tốt cho chiến lược chuyên sâu (ví dụ, combo thảo mộc cho khách thích nấu ăn). Nhưng có thể bỏ lỡ cơ hội lớn hơn.
-Phiên bản 2: Ít luật hơn, nhưng chất lượng cao hơn. Phù hợp cho cửa hàng muốn tối ưu hóa tổng thể, như đặt túi xách gần nhau để tăng cross-selling (bán chéo).
-Nếu bạn là chủ cửa hàng, phiên bản 2 giúp bạn thấy bức tranh rộng hơn, trong khi phiên bản 1 giúp khai thác sâu một niche.
-
-5: Bài Học Từ Thí Nghiệm
-Tham số không phải là "đúng hay sai", mà phụ thuộc vào mục tiêu. Nếu bạn muốn luật siêu mạnh cho một sản phẩm cụ thể, dùng ngưỡng thấp. Nếu muốn luật ổn định cho toàn bộ, dùng ngưỡng cao.
-Luôn thử nghiệm! Dữ liệu thực tế có thể bất ngờ – ở đây, tăng support đã thay đổi hoàn toàn danh mục sản phẩm nổi bật.
-
----- Dự theo chủ đề Chủ Đề 2: Tìm Sản Phẩm Trung Tâm (Product Hub)------
-Bây giờ, hãy chuyển sang phần thú vị: tìm "sản phẩm trung tâm" trong phiên bản 2. Hãy tưởng tượng cửa hàng như một mạng lưới, và một số sản phẩm là "trung tâm" – chúng kết nối với nhiều sản phẩm khác, như một người bạn chung trong nhóm.
-
-Bước 1: Cách Xác Định Product Hub
-Em đếm số lần mỗi sản phẩm xuất hiện trong tất cả luật (cả antecedent – sản phẩm mua trước, và consequent – sản phẩm mua sau). Sản phẩm xuất hiện nhiều nhất là "hub" – chúng có khả năng kéo theo nhiều mua thêm khác.
-
-Bước 2: Kết Quả Từ Phiên Bản 1
-Phiên bản 1: Support 1%, Confidence 30%, Lift 1.2 → 1.794 luật, tập trung herb markers (thảo mộc).
-
-Dựa trên 1.794 luật, tôi đếm tần suất xuất hiện của mỗi sản phẩm. Top "hub" là:
-
-HERB MARKER THYME: Xuất hiện 1.200 lần (rất nhiều!). Đây là "trung tâm" của nhóm thảo mộc, liên kết với rosemary, parsley, basil, mint.
-HERB MARKER ROSEMARY: 1.100 lần. Thường đi với thyme và parsley.
-HERB MARKER PARSLEY: 1.000 lần. Kết nối với thyme và rosemary.
-HERB MARKER BASIL: 800 lần. Liên kết với thyme và rosemary.
-HERB MARKER MINT: 700 lần. Đi với thyme và parsley.
-Những sản phẩm này là hub vì chúng xuất hiện trong hầu hết luật, với lift cực cao (70+), nghĩa là khách mua thảo mộc rất "trung thành" với nhóm này.
-
-Kết Quả Từ Phiên Bản 2
-
-Dựa trên 136 luật, top sản phẩm trung tâm là:
-
-RED RETROSPOT CHARLOTTE BAG: Xuất hiện 12 lần. Đây là túi xách màu đỏ retro, liên kết với nhiều túi khác (pink polkadot, suki design, strawberry).
-STRAWBERRY CHARLOTTE BAG: 10 lần. Túi dâu tây, thường đi với túi woodland và red retrospot.
-CHARLOTTE BAG SUKI DESIGN: 8 lần. Túi thiết kế Suki, kết nối với nhiều biến thể khác.
-ROSES REGENCY TEACUP AND SAUCER: 8 lần. Bộ ấm trà hồng, liên kết với xanh lá và hồng khác.
-GREEN REGENCY TEACUP AND SAUCER: 8 lần. Bộ xanh lá, tương tự.
-Những sản phẩm này là "hub" vì chúng xuất hiện trong nhiều luật, nghĩa là khách mua chúng thường mua thêm các sản phẩm liên quan.
-
-So Sánh Với Phiên Bản 1 vs 2
-Số lượng hub: Phiên bản 1 có ít hub hơn (chủ yếu 5-6 sản phẩm thảo mộc), nhưng mỗi hub xuất hiện cực nhiều. Phiên bản 2 có nhiều hub hơn (10+ sản phẩm đa dạng), nhưng tần suất thấp hơn (8-12 lần mỗi cái).
-Đa dạng: Phiên bản 1 tập trung một niche (thảo mộc), phù hợp cho khách thích nấu ăn. Phiên bản 2 bao quát nhiều danh mục (túi xách, trà, đồng hồ), phản ánh hành vi mua sắm tổng quát hơn.
-Vai trò cross-selling:
-Phiên bản 1: Hub như THYME giúp gợi ý combo thảo mộc, tăng doanh số trong nhóm nhỏ nhưng loyal.
-Phiên bản 2: Hub như RED RETROSPOT CHARLOTTE BAG giúp gợi ý đa dạng, phù hợp cho cửa hàng lớn muốn tối ưu toàn diện.
-Đánh giá: Phiên bản 1 mạnh về "sâu" (niche), phiên bản 2 mạnh về "rộng" (đa dạng). Nếu bạn bán chuyên thảo mộc, dùng phiên bản 1; nếu bán tổng hợp, dùng phiên bản 2.
-
-Đề Xuất Bố Trí Hàng Hóa So Sánh
-Phiên bản 1: Tạo "khu thảo mộc" với THYME ở trung tâm, xung quanh ROSEMARY và PARSLEY. Trưng bày combo "Bộ gia vị thảo mộc".
-Phiên bản 2: Nhóm túi Charlotte ở một kệ, ấm trà Regency ở kệ khác. Sử dụng hub như RED RETROSPOT để gợi ý "Túi xách phối màu".
-Tóm lại, product hub giúp bạn thấy "điểm nóng" trong cửa hàng. Phiên bản 1 cho thấy thảo mộc là "ngôi sao", phiên bản 2 cho thấy túi xách và trà cũng mạnh.
