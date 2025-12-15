@@ -86,53 +86,81 @@ Số luật sau khi lọc: 135
 5. Trực quan hóa (Visualization)
 
 Hình 1: Top frequent itemsets theo support
+<img width="1271" height="841" alt="image" src="https://github.com/user-attachments/assets/1b52be96-b9a4-4983-a16d-59ff02a8f414" />
+
 → Cho thấy các sản phẩm phổ biến nhất như JUMBO BAG RED RETROSPOT, REGENCY CAKESTAND 3 TIER.
 
 Hình 2: Phân phối độ dài itemset
-→ Chủ yếu là itemset độ dài 1 và 2, phù hợp với hành vi mua kèm thực tế.
+<img width="971" height="597" alt="image" src="https://github.com/user-attachments/assets/1506eb70-acf9-41bf-9018-215032d94e6c" />
+
+→ Phần lớn tập mục có độ dài 1 và 2, cho thấy khách hàng thường mua theo cặp sản phẩm như:
+
+GREEN REGENCY TEACUP AND SAUCER & PINK REGENCY TEACUP AND SAUCER
 
 Hình 3: Top 20 luật theo Lift
+<img width="1372" height="837" alt="image" src="https://github.com/user-attachments/assets/4f386ec2-9f2e-40bf-b4ff-1eb0a30c4869" />
+
 → Các cặp sản phẩm có liên kết mạnh như bộ Regency Teacup, Charlotte Bag.
 
 Hình 4: Top 20 luật theo Confidence
 → Nhiều luật có confidence từ 60–90%, rất phù hợp cho gợi ý mua thêm.
 
 Hình 5: Scatter Support vs Confidence (màu = Lift)
+<img width="920" height="723" alt="image" src="https://github.com/user-attachments/assets/4e858710-3657-442b-a149-e1a194ea8147" />
+
 → Các luật tập trung trong vùng support ≥ 0.02 và confidence ≥ 0.4.
 
 Hình 6: Mạng lưới luật kết hợp (Network graph)
+<img width="1265" height="834" alt="image" src="https://github.com/user-attachments/assets/39051e3e-83a6-4618-a97c-963872c3255c" />
+
 → Thể hiện rõ các product hub và cụm sản phẩm.
 
-6. Insight từ Kết quả
+6. Insight từ Kết quả (ghi RÕ TÊN HÀNG HÓA)
 
-Insight #1:
-Các sản phẩm cùng bộ hoặc cùng biến thể màu (Regency Teacup, Charlotte Bag) có xu hướng được mua cùng nhau với lift và confidence cao.
+Insight #1 – Mua theo bộ sưu tập
+Khách hàng thường mua cùng lúc các sản phẩm:
 
-Insight #2:
-Những luật có lift rất cao nhưng support vừa phải cho thấy hành vi mua theo bộ sưu tập, không phải ngẫu nhiên.
+GREEN / PINK / ROSES REGENCY TEACUP AND SAUCER, cho thấy xu hướng mua trọn bộ ấm trà cùng dòng.
 
-Insight #3:
-Hành vi mua kèm chủ yếu diễn ra theo cặp sản phẩm, không theo nhóm lớn.
+Insight #2 – Cặp sản phẩm trang trí Giáng sinh
+Hai sản phẩm:
 
-Insight #4:
-Một số sản phẩm đóng vai trò Product Hub, xuất hiện trong nhiều luật và kéo theo nhiều sản phẩm khác.
+WOODEN HEART CHRISTMAS SCANDINAVIAN
 
-Insight #5:
-Tham số chặt giúp loại bỏ luật nhiễu và làm nổi bật các mẫu mua sắm ổn định, dễ triển khai.
+WOODEN STAR CHRISTMAS SCANDINAVIAN
+có mối liên kết rất mạnh (lift ≈ 27), phù hợp bán theo combo mùa lễ.
 
-7. Kết luận & Đề xuất Kinh doanh
+Insight #3 – Product Hub túi xách
+RED RETROSPOT CHARLOTTE BAG đóng vai trò trung tâm, thường được mua cùng:
+
+PINK POLKADOT CHARLOTTE BAG
+
+STRAWBERRY CHARLOTTE BAG
+
+WOODLAND CHARLOTTE BAG
+
+Insight #4 – Hành vi mua cặp hộp ăn trưa
+Khách mua SPACEBOY LUNCH BOX thường mua thêm DOLLY GIRL LUNCH BOX, cho thấy hai sản phẩm bổ sung cho nhau.
+
+Insight #5 – Ưu điểm của tham số phiên bản 2
+Với ngưỡng support và confidence cao, các luật còn lại đều liên quan đến sản phẩm phổ biến, bán ổn định, không bị lệch vào niche hiếm.
+
+7. Kết luận & Đề xuất Kinh doanh (có tên hàng hóa)
 
 Cross-selling:
-Gợi ý mua kèm các sản phẩm trong cùng nhóm (Charlotte Bag, Regency Teacup).
+
+Gợi ý mua PINK / GREEN / ROSES REGENCY TEACUP AND SAUCER theo bộ.
+
+Gợi ý các mẫu Charlotte Bag cùng dòng khi khách chọn RED RETROSPOT.
 
 Bố trí kệ hàng:
-Đặt các product hub ở vị trí trung tâm, các biến thể xung quanh.
+
+Đặt RED RETROSPOT CHARLOTTE BAG ở trung tâm kệ túi xách.
+
+Nhóm WOODEN HEART và WOODEN STAR CHRISTMAS SCANDINAVIAN trong khu vực quà tặng Giáng sinh.
 
 Khuyến mãi theo mùa:
-Các cặp sản phẩm liên quan đến Giáng sinh hoặc quà tặng có thể được gộp thành combo.
 
-8. Link Code & Notebook
+Tạo combo lễ hội cho WOODEN HEART / STAR CHRISTMAS SCANDINAVIAN.
 
-Notebook: …
-
-GitHub Repo: …
+Combo “Lunch set” cho SPACEBOY LUNCH BOX & DOLLY GIRL LUNCH BOX.
