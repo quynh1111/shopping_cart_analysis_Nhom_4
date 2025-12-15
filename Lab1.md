@@ -9,7 +9,10 @@ Nguyễn Mạnh Đông
 
 …
 
-Chủ đề: Phân tích giỏ hàng và khai thác luật kết hợp mua sắm
+Chủ đề: 7.3.2 Chủ đề 2: Tìm sản phẩm trung tâm (Product Hub)
+• Xác định sản phẩm xuất hiện nhiều nhất trong các luật.
+• Đánh giá vai trò “hub” trong chiến lược cross-selling.
+• Đề xuất cách bố trí hàng hóa.
 
 Dataset: Online Retail (UCI – UK Retail Dataset)
 
