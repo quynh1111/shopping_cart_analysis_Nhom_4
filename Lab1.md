@@ -106,7 +106,7 @@ Hình 3: Top 20 luật theo Lift
 → Các cặp sản phẩm có liên kết mạnh như bộ Regency Teacup, Charlotte Bag.
 
 Hình 4: Top 20 luật theo Confidence
-→ Nhiều luật có confidence từ 60–90%, rất phù hợp cho gợi ý mua thêm.
+→ Các cặp sản phẩm có liên kết mạnh như bộ Regency Teacup, Charlotte Bag.
 
 Hình 5: Scatter Support vs Confidence (màu = Lift)
 <img width="920" height="723" alt="image" src="https://github.com/user-attachments/assets/4e858710-3657-442b-a149-e1a194ea8147" />
